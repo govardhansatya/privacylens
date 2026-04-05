@@ -31,7 +31,7 @@ func Tokenize(text string, spans []EntitySpan, vault SessionVault, sessionID str
 	})
 
 	valueToToken := map[string]string{}
-	getOrCreate := func(entityType, value string) string {
+	getOrCreateToken := func(entityType, value string) string {
 		if token, ok := valueToToken[value]; ok {
 			return token
 		}
@@ -65,7 +65,7 @@ func Tokenize(text string, spans []EntitySpan, vault SessionVault, sessionID str
 			continue
 		}
 		parts = append(parts, text[cursor:span.Start])
-		token := getOrCreate(span.EntityType, span.Value)
+		token := getOrCreateToken(span.EntityType, span.Value)
 		parts = append(parts, token)
 		pairs = append(pairs, TokenPair{Token: token, Value: span.Value})
 		cursor = span.End

@@ -1,6 +1,9 @@
 package privacylens
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 type SessionVault interface {
 	Store(sessionID, token, value string)
@@ -9,6 +12,7 @@ type SessionVault interface {
 }
 
 type MemoryVault struct {
+	mu   sync.RWMutex
 	data map[string]map[string]string
 }
 
@@ -17,6 +21,8 @@ func NewMemoryVault() *MemoryVault {
 }
 
 func (v *MemoryVault) Store(sessionID, token, value string) {
+	v.mu.Lock()
+	defer v.mu.Unlock()
 	session, ok := v.data[sessionID]
 	if !ok {
 		session = map[string]string{}
@@ -26,6 +32,8 @@ func (v *MemoryVault) Store(sessionID, token, value string) {
 }
 
 func (v *MemoryVault) Retrieve(sessionID, token string) (string, error) {
+	v.mu.RLock()
+	defer v.mu.RUnlock()
 	session, ok := v.data[sessionID]
 	if !ok {
 		return "", fmt.Errorf("session not found: %s", sessionID)
@@ -38,5 +46,7 @@ func (v *MemoryVault) Retrieve(sessionID, token string) (string, error) {
 }
 
 func (v *MemoryVault) Clear(sessionID string) {
+	v.mu.Lock()
+	defer v.mu.Unlock()
 	delete(v.data, sessionID)
 }

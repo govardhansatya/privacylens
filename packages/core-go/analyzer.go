@@ -38,6 +38,9 @@ func resolveOverlaps(spans []EntitySpan) []EntitySpan {
 			result = append(result, span)
 			lastEnd = span.End
 		} else if span.End > lastEnd {
+			// This branch handles crossing overlaps (not fully-contained spans):
+			// when a later span starts before lastEnd but extends further right,
+			// we keep the span that covers more suffix to avoid truncating coverage.
 			result[len(result)-1] = span
 			lastEnd = span.End
 		}
