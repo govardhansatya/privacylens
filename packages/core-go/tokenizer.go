@@ -58,6 +58,8 @@ func Tokenize(text string, spans []EntitySpan, vault SessionVault, sessionID str
 	cursor := 0
 	lastEnd := -1
 	for _, span := range sorted {
+		// Adjacent spans (span.Start == lastEnd) are valid and must be tokenized.
+		// Only fully-contained spans are skipped here.
 		if span.Start < lastEnd && span.End <= lastEnd {
 			continue
 		}

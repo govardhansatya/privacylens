@@ -46,8 +46,8 @@ func resolveOverlaps(spans []EntitySpan) []EntitySpan {
 			currLen := span.End - span.Start
 			if currLen > prevLen {
 				result[len(result)-1] = span
-				lastEnd = span.End
 			}
+			lastEnd = span.End
 		}
 	}
 	return result
