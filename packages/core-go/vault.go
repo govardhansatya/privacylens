@@ -28,7 +28,7 @@ func (v *MemoryVault) Store(sessionID, token, value string) {
 func (v *MemoryVault) Retrieve(sessionID, token string) (string, error) {
 	session, ok := v.data[sessionID]
 	if !ok {
-		return "", fmt.Errorf("token not found in session: %s", token)
+		return "", fmt.Errorf("session not found: %s", sessionID)
 	}
 	value, ok := session[token]
 	if !ok {

@@ -50,7 +50,8 @@ func (a *Analyzer) Analyze(text string) []EntitySpan {
 	for _, detector := range a.detectors {
 		func() {
 			defer func() {
-				if recover() != nil {
+				if r := recover(); r != nil {
+					log.Printf("[privacylens] detector panic recovered: %v", r)
 				}
 			}()
 			all = append(all, detector.Detect(text)...)

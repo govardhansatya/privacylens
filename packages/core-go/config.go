@@ -100,6 +100,8 @@ func normalizeConfig(cfg Config) Config {
 func LoadConfig(opts *LoadConfigOptions) (Config, error) {
 	merged := DefaultConfig()
 
+	// Priority order (lowest -> highest):
+	// default config, cwd privacylens.yaml, explicit opts.ConfigPath, direct overrides.
 	cwdPath := filepath.Join(".", "privacylens.yaml")
 	if _, err := os.Stat(cwdPath); err == nil {
 		fileCfg, err := loadConfigFile(cwdPath)
