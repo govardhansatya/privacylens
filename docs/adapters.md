@@ -223,3 +223,17 @@ For CrewAI, use `CrewAIAdapter` directly (see above) — `shield()` does not aut
 | `AsyncOpenAI` | OpenAI proxy (async) |
 
 If the client type is not recognised, `shield()` raises a `TypeError` listing the supported types.
+
+---
+
+## Go SDK support
+
+The Go SDK currently provides core pipeline primitives (detectors, analyzer, tokenizer, vault, detokenizer, config loading) rather than prebuilt provider adapters.
+
+```go
+cfg, _ := privacylens.LoadConfig(nil)
+pipeline := privacylens.NewPipeline(cfg)
+masked := pipeline.TokenizeMessages([]map[string]any{
+  {"role": "user", "content": "My email is john@example.com"},
+}, "s1")
+```

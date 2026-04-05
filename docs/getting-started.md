@@ -6,6 +6,7 @@ PrivacyLens wraps your LLM client with one line of code. PII is masked before ev
 
 - **Python SDK**: Python 3.10+
 - **TypeScript SDK**: Node.js 20+
+- **Go SDK**: Go 1.22+
 
 ## Install
 
@@ -15,6 +16,9 @@ pip install privacylens
 
 # TypeScript
 npm install privacylens
+
+# Go
+go get github.com/govardhansatya/privacylens/packages/core-go
 ```
 
 ## Your first shielded client
@@ -49,6 +53,27 @@ const response = await client.chat.completions.create({
 console.log(response.choices[0].message.content); // john@example.com is restored
 ```
 
+### Go
+
+```go
+package main
+
+import (
+  "fmt"
+  privacylens "github.com/govardhansatya/privacylens/packages/core-go"
+)
+
+func main() {
+  cfg, _ := privacylens.LoadConfig(nil)
+  pipeline := privacylens.NewPipeline(cfg)
+  messages := []map[string]any{
+    {"role": "user", "content": "My email is john@example.com"},
+  }
+  masked := pipeline.TokenizeMessages(messages, "s1")
+  fmt.Println(masked[0]["content"]) // My email is [EMAIL_1]
+}
+```
+
 That's it. No other changes needed.
 
 ## Preview what gets masked
@@ -76,6 +101,16 @@ const spans = inspect("Call me at 555-123-4567 or email john@example.com");
 spans.forEach(s => console.log(`${s.entityType}: '${s.value}'`));
 // PHONE: '555-123-4567'
 // EMAIL: 'john@example.com'
+```
+
+### Go
+
+```go
+cfg, _ := privacylens.LoadConfig(nil)
+spans, _ := privacylens.Inspect("Call 555-123-4567 or email john@example.com", &cfg)
+for _, s := range spans {
+  fmt.Printf("%s: %q\n", s.EntityType, s.Value)
+}
 ```
 
 ## What happens under the hood

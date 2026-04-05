@@ -135,3 +135,12 @@ const client = shield(new OpenAI(), loadConfig({
   }
 }));
 ```
+
+## Go
+
+The Go SDK currently ships the regex detector (EMAIL, PHONE, SSN) plus additive custom regex patterns.
+
+```go
+cfg, _ := privacylens.LoadConfig(nil)
+spans, _ := privacylens.Inspect("SSN: 123-45-6789", &cfg)
+```
