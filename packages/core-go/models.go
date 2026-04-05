@@ -22,9 +22,9 @@ func NewEntitySpan(start, end int, entityType, value string) (EntitySpan, error)
 }
 
 type PatternConfig struct {
-	EntityType string `json:"entityType" yaml:"entityType"`
+	EntityType    string `json:"entityType" yaml:"entityType"`
 	EntityTypeAlt string `json:"entity_type" yaml:"entity_type"`
-	Pattern    string `json:"pattern" yaml:"pattern"`
+	Pattern       string `json:"pattern" yaml:"pattern"`
 }
 
 func (p PatternConfig) Type() string {
@@ -35,7 +35,7 @@ func (p PatternConfig) Type() string {
 }
 
 type DetectorConfig struct {
-	Enabled  *bool          `json:"enabled" yaml:"enabled"`
+	Enabled  *bool           `json:"enabled" yaml:"enabled"`
 	Patterns []PatternConfig `json:"patterns" yaml:"patterns"`
 }
 
@@ -47,10 +47,10 @@ func (d DetectorConfig) IsEnabled() bool {
 }
 
 type Config struct {
-	Version   string                    `json:"version" yaml:"version"`
-	Detectors map[string]DetectorConfig `json:"detectors" yaml:"detectors"`
-	Vault     string                    `json:"vault" yaml:"vault"`
-	OnDetection func(entityType string) `json:"-" yaml:"-"`
+	Version     string                    `json:"version" yaml:"version"`
+	Detectors   map[string]DetectorConfig `json:"detectors" yaml:"detectors"`
+	Vault       string                    `json:"vault" yaml:"vault"`
+	OnDetection func(entityType string)   `json:"-" yaml:"-"`
 }
 
 type Detector interface {
