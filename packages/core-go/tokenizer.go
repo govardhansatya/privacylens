@@ -61,7 +61,7 @@ func Tokenize(text string, spans []EntitySpan, vault SessionVault, sessionID str
 		if span.Start < lastEnd && span.End <= lastEnd {
 			continue
 		}
-		if span.Start < 0 || span.End > len(text) || span.Start > len(text) || span.End < span.Start {
+		if span.Start < 0 || span.End > len(text) || span.End < span.Start {
 			continue
 		}
 		parts = append(parts, text[cursor:span.Start])

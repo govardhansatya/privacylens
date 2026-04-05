@@ -1,6 +1,9 @@
 package privacylens
 
-import "regexp"
+import (
+	"log"
+	"regexp"
+)
 
 type compiledPattern struct {
 	entityType string
@@ -25,6 +28,7 @@ func NewRegexDetector(cfg *DetectorConfig) *RegexDetector {
 			}
 			re, err := regexp.Compile(p.Pattern)
 			if err != nil {
+				log.Printf("[privacylens] skipping invalid regex pattern for %s: %v", typ, err)
 				continue
 			}
 			patterns = append(patterns, compiledPattern{entityType: typ, re: re})
