@@ -120,6 +120,19 @@ const client2 = shield(new OpenAI(), cfg);
 
 ---
 
+### Go
+
+```go
+cfg, _ := privacylens.LoadConfig(&privacylens.LoadConfigOptions{
+  ConfigPath: "privacylens.yaml",
+})
+pipeline := privacylens.NewPipeline(cfg)
+```
+
+Go config loading supports the same `privacylens.yaml` file and custom regex patterns.
+
+---
+
 ## on_detection callback (Python only)
 
 Get notified when PII is detected — useful for logging entity types (never log values).

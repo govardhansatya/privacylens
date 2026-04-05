@@ -23,6 +23,7 @@ Your LLM never sees real PII. Your app gets back the original values. Zero code 
 |---------|---------|----------|
 | [Python SDK](./packages/core-py) | `pip install privacylens` | OpenAI, Anthropic, LangChain, CrewAI, Strands |
 | [TypeScript SDK](./packages/core-ts) | `npm install privacylens` | OpenAI, Vercel AI SDK |
+| [Go SDK](./packages/core-go) | `go get github.com/govardhansatya/privacylens/packages/core-go` | Core pipeline primitives |
 
 ## Quick Start
 
@@ -85,6 +86,21 @@ const { text } = await generateText({
   model: shield(openai("gpt-4o")),
   prompt: "Summarise the contract for john@example.com",
 });
+```
+
+### Go — core pipeline
+
+```go
+import privacylens "github.com/govardhansatya/privacylens/packages/core-go"
+
+cfg, _ := privacylens.LoadConfig(nil)
+pipeline := privacylens.NewPipeline(cfg)
+
+messages := []map[string]any{
+  {"role": "user", "content": "My email is john@example.com"},
+}
+masked := pipeline.TokenizeMessages(messages, "s1")
+restored := pipeline.Detokenize("Contact [EMAIL_1]", "s1")
 ```
 
 ## What Gets Detected
@@ -163,6 +179,9 @@ privacylens/
 │       │   ├── core/         # Pipeline, Analyzer, Tokenizer, Vault
 │       │   └── detectors/    # Regex
 │       └── tests/
+│   └── core-go/          # Go SDK
+│       ├── *.go          # Core pipeline, config, detector, tokenizer, vault
+│       └── *_test.go
 └── privacylens.schema.json   # Config schema
 ```
 
